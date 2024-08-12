@@ -69,6 +69,7 @@ rect_y = (SCREEN_HEIGHT - RECT_HEIGHT) // 2
 
 centered_rect = pygame.Rect(rect_x, rect_y, RECT_WIDTH, RECT_HEIGHT)
 
+
 running = True
 while running:
     # Get inputs
@@ -86,6 +87,7 @@ while running:
     pygame.draw.rect(SCREEN, RECT_COLOR, centered_rect)
 
     min_distance = float('inf')
+    directional_min_distance = float('inf')
     closest_label = None
 
     for index, label in enumerate(labels):
@@ -94,14 +96,18 @@ while running:
 
         center_y = (SCREEN_HEIGHT / 2)
         distance = abs(label_y_pos - center_y)
+        directional_distance = label_y_pos - center_y
 
         if distance < min_distance:
             min_distance = distance
+            directional_min_distance = directional_distance
             closest_label = label
 
-    if list_velocity < 0.1:
-        if closest_label is not None:
-            print(f"The closest label to the center is: {closest_label.text}")
+    if  list_velocity < 0.08 and min_distance < 18:
+        print("Selected game: ", closest_label.text)
+                    
+    if closest_label is not None:
+            list_velocity += directional_min_distance * 0.001
 
     pygame.display.update()
     fps_clock.tick(FPS)
