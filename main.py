@@ -11,7 +11,7 @@ FONT_SIZE = 36
 FPS = 60
 fps_clock = pygame.time.Clock()
 
-pygame.display.set_caption('My Game!')
+pygame.display.set_caption('Roulette Wheel')
 font = pygame.font.Font(None, FONT_SIZE)
 
 

@@ -1,6 +1,7 @@
 import pygame
 import sys
 import random
+import subprocess
 
 pygame.init()
 
@@ -19,18 +20,23 @@ lower_bound = 1
 upper_bound = 100
 guess = (lower_bound + upper_bound) // 2
 
+game_path = "main.py"
+
 running = True
 game_over = False
 tries = 0
 changed_guess = False
 out_of_bounds = None
 intro_screen = True
+restart_timer_started = False
 
 def draw_text(text, font, color, surface, x, y):
     text_obj = font.render(text, True, color)
     text_rect = text_obj.get_rect(center=(x, y))
     surface.blit(text_obj, text_rect)
 
+# Event for restarting the game
+RESTART_EVENT = pygame.USEREVENT + 1
 
 while running:
     
@@ -86,7 +92,11 @@ while running:
                     game_over = True
             
             guess = (lower_bound + upper_bound) // 2
-
+        
+        # Handle the restart event
+        if event.type == RESTART_EVENT:
+            subprocess.Popen(["python3", "-c", f"import game_opener; game_opener.open_game('{game_path}')"])
+            running = False  # Quit current game loop
 
     screen.fill(white)
 
@@ -107,6 +117,11 @@ while running:
             
         else:
             draw_text(f"Guessed it in {tries} tries!", font, black, screen, screen_width//2, screen_height//2)
+        
+        # Start the timer to restart the game
+        if not restart_timer_started:
+            pygame.time.set_timer(RESTART_EVENT, 2500)
+            restart_timer_started = True
             
     else:
         
