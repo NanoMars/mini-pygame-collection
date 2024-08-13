@@ -57,7 +57,7 @@ SCREEN_HEIGHT = ((len(labels) - 1) * FONT_SIZE)
 
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-list_velocity = 7.5
+list_velocity = random.randrange(5, 9)
 list_position = random.random() * SCREEN_HEIGHT
 
 RECT_HEIGHT = FONT_SIZE
@@ -68,6 +68,8 @@ rect_x = 0
 rect_y = (SCREEN_HEIGHT - RECT_HEIGHT) // 2
 
 centered_rect = pygame.Rect(rect_x, rect_y, RECT_WIDTH, RECT_HEIGHT)
+
+selected_game = None
 
 
 running = True
@@ -103,9 +105,16 @@ while running:
             directional_min_distance = directional_distance
             closest_label = label
 
-    if  list_velocity < 0.08 and min_distance < 18:
-        print("Selected game: ", closest_label.text)
-                    
+    if list_velocity < 0.04 and min_distance < 15 and selected_game is None:
+        selected_game = closest_label.text + ".py"
+        print("Selected game:", selected_game)
+        game_path = os.path.join(games_folder, selected_game)
+        
+        game_path = os.path.abspath(game_path)
+        print(f'modified: python "{game_path}"')
+        os.system(f'python "{game_path}"')
+        running = False
+        
     if closest_label is not None:
             list_velocity += directional_min_distance * 0.001
 
