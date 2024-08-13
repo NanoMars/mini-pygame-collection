@@ -1,4 +1,4 @@
-import pygame, sys, random, os
+import pygame, sys, random, os, subprocess
 from pygame.locals import *
 pygame.init()
 
@@ -70,7 +70,7 @@ rect_y = (SCREEN_HEIGHT - RECT_HEIGHT) // 2
 centered_rect = pygame.Rect(rect_x, rect_y, RECT_WIDTH, RECT_HEIGHT)
 
 selected_game = None
-
+game_path = None
 
 running = True
 while running:
@@ -105,14 +105,14 @@ while running:
             directional_min_distance = directional_distance
             closest_label = label
 
-    if list_velocity < 0.04 and min_distance < 15 and selected_game is None:
+    if list_velocity < 0.04 and min_distance < 10 and selected_game is None:
         selected_game = closest_label.text + ".py"
         print("Selected game:", selected_game)
+        print("min_distance:", min_distance)
         game_path = os.path.join(games_folder, selected_game)
-        
         game_path = os.path.abspath(game_path)
         print(f'modified: python "{game_path}"')
-        os.system(f'python "{game_path}"')
+        
         running = False
         
     if closest_label is not None:
@@ -120,3 +120,6 @@ while running:
 
     pygame.display.update()
     fps_clock.tick(FPS)
+    
+subprocess.Popen(["python3", "-c", f"import game_opener; game_opener.open_game('{game_path}')"])
+pygame.quit()
