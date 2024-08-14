@@ -25,35 +25,31 @@ def draw_button (height):
     y = screen_height / 2 - height + 65
     pygame.draw.rect(screen, red, (x, y, width, height))
     
-button_state = 'idle'
 cursor_pos = pygame.mouse.get_pos()
 default_button_height = 100
 button_height = default_button_height
 clicks_to_go = 100
+button_clicked = False
 
 font = pygame.font.SysFont(None, 48)
     
-def set_button_state():
-    global button_height, clicks_to_go
+def calculate_clicked():
+    global button_height, clicks_to_go, button_clicked
     x = (screen_width - width) // 2
     y = screen_height / 2 - default_button_height + 65
-    global button_state
     new_button_height = max(min(default_button_height - (cursor_pos[1] - y), default_button_height), 5)
     
     if cursor_pos[0] > x and cursor_pos[0] < x + width:
         button_height = new_button_height
-    
-    if button_state == 'idle' and cursor_pos[0] > x and cursor_pos[0] < x + width and cursor_pos[1] < y:
-        button_state = 'hover'
-        button_height = default_button_height
-    elif button_state == 'hover' and cursor_pos[0] > x and cursor_pos[0] < x + width and new_button_height <= 10:
-        button_state = 'pressed'
-    elif button_state == 'pressed':
-        print("hi")
+        
+    if new_button_height == 100:
+        button_clicked = False
+    if new_button_height <= 10 and button_clicked == False:
+        button_clicked = True
         clicks_to_go -= 1
-        button_state = 'idle'
-    else:
-        button_state = 'idle'
+
+    
+    
 
 
 
@@ -69,12 +65,12 @@ while running:
 
     y = screen_height / 2 - default_button_height + 65
     draw_button(button_height)
-    set_button_state()
+    calculate_clicked()
     pygame.display.flip()
     
     clicks_text = font.render(f"Clicks to go: {clicks_to_go}", True, black)
     screen.blit(clicks_text, (screen_width // 2 - clicks_text.get_width() // 2, 20))
-    #print(clicks_to_go)
+    print(clicks_to_go)
     
     clock.tick(60)
 
