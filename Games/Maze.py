@@ -1,4 +1,4 @@
-import pygame
+import pygame, subprocess
 from random import choice
 
 RES = WIDTH, HEIGHT = 1200, 900
@@ -8,6 +8,11 @@ cols, rows = WIDTH // TILE, HEIGHT // TILE
 pygame.init()
 sc = pygame.display.set_mode(RES)
 clock = pygame.time.Clock()
+
+game_path = "main.py"
+
+
+wall_colour = pygame.Color('black')
 
 class Cell:
     def __init__(self, x, y):
@@ -23,16 +28,16 @@ class Cell:
         x, y = self.x * TILE, self.y * TILE
         
         if self.visited:
-            pygame.draw.rect(sc, pygame.Color('#1e1e1e'), (x, y, TILE, TILE))
+            pygame.draw.rect(sc, pygame.Color('white'), (x, y, TILE, TILE))
         
         if self.walls['top']:
-            pygame.draw.line(sc, pygame.Color('#1e4f5b'), (x, y), (x + TILE, y), 3)
+            pygame.draw.line(sc, wall_colour, (x, y), (x + TILE, y), 3)
         if self.walls['right']:
-            pygame.draw.line(sc, pygame.Color('#1e4f5b'), (x + TILE, y), (x + TILE, y + TILE), 3)
+            pygame.draw.line(sc, wall_colour, (x + TILE, y), (x + TILE, y + TILE), 3)
         if self.walls['bottom']:
-            pygame.draw.line(sc, pygame.Color('#1e4f5b'), (x + TILE, y + TILE), (x, y + TILE), 3)
+            pygame.draw.line(sc, wall_colour, (x + TILE, y + TILE), (x, y + TILE), 3)
         if self.walls['left']:
-            pygame.draw.line(sc, pygame.Color('#1e4f5b'), (x, y + TILE), (x, y), 3)
+            pygame.draw.line(sc, wall_colour, (x, y + TILE), (x, y), 3)
             
     def check_cell(self, x, y):
         find_index = lambda x, y: x + y * cols
@@ -85,13 +90,14 @@ stack = []
 colors, color = [], 40
 mouse_pos = (0, 0)
 game_state = 'loading'
+timer_start = None
 
 def draw_loading_screen():
     text = font.render('Generating maze...', True, pygame.Color('black'))
     sc.blit(text, (WIDTH // 2 - text.get_width() // 2, HEIGHT // 2 - text.get_height() // 2))
     
 def draw_waiting_screen():
-    pygame.draw.rect(sc, pygame.Color('black'), (0, 0, WIDTH, HEIGHT))
+    sc.fill(pygame.Color('black'))
     pygame.draw.rect(sc, pygame.Color('red'), (WIDTH - TILE, HEIGHT - TILE, TILE, TILE))
     
     text = font.render('Place cursor on the red square', True, pygame.Color('white'))
@@ -109,6 +115,7 @@ while True:
     [pygame.draw.rect(sc, colors[i], (cell.x * TILE + 2, cell.y * TILE + 2, TILE - 4, TILE - 4), border_radius=8) for i, cell in enumerate(stack)] 
 
     mouse_pos = pygame.mouse.get_pos()
+    color_under_cursor = sc.get_at(mouse_pos)
     
     if game_state == 'loading':
         draw_loading_screen()
@@ -138,7 +145,24 @@ while True:
         
         if mouse_pos[0] > (WIDTH - TILE) and mouse_pos[0] < (WIDTH) and mouse_pos[1] > HEIGHT - TILE and mouse_pos[1] < HEIGHT:
             game_state = 'playing'
-                
+    if game_state == 'playing':
+        pygame.draw.rect(sc, pygame.Color(0,255,0), (0, 0, TILE, TILE))
+        if color_under_cursor == (0, 0, 0, 255):
+            game_state = 'waiting'
+        elif mouse_pos[0] > 0 and mouse_pos[1] > 0 and mouse_pos[0] < TILE and mouse_pos[1] < TILE:
+            game_state = 'win'
+    if game_state == 'win':
+        sc.fill(pygame.Color('white'))
+        text = font.render('You win!', True, pygame.Color('black'))
+        sc.blit(text, (WIDTH // 2 - text.get_width() // 2, HEIGHT // 2 - text.get_height() // 2))
+        
+        if not timer_start:
+            timer_start = pygame.time.get_ticks()
+        elif pygame.time.get_ticks() - timer_start > 2500:
+            subprocess.Popen(["python3", "-c", f"import game_opener; game_opener.open_game('{game_path}')"])
+            pygame.quit()
+            exit()
+        
     
         
     pygame.display.flip()
