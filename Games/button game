@@ -1,0 +1,49 @@
+import pygame
+import sys
+
+
+pygame.init()
+
+
+screen_width = 800
+screen_height = 600
+screen = pygame.display.set_mode((screen_width, screen_height))
+pygame.display.set_caption("Simple Pygame Template")
+
+# Set up the game clock
+clock = pygame.time.Clock()
+
+# Define colors (RGB)
+white = (255, 255, 255)
+black = (0, 0, 0)
+red = (255, 0, 0)
+
+def draw_button (height):
+    width = 200
+    x = (screen_width - width) // 2
+    y = screen_height / 2 - height + 65
+    pygame.draw.rect(screen, red, (x, y, width, height))
+
+
+button_height = 50
+button_state = 'idle'
+
+# Main game loop
+running = True
+while running:
+    screen.fill(white)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+
+    draw_button(button_height)
+    button_height += 1
+
+
+    pygame.display.flip()
+
+    clock.tick(60)
+
+pygame.quit()
+sys.exit()
