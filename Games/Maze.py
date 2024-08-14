@@ -77,11 +77,26 @@ def remove_walls(current, next):
     elif dy == -1:
         current.walls['bottom'] = False
         next.walls['top'] = False 
+font = pygame.font.Font(None, 65)
 
 grid_cells = [Cell(col, row) for row in range(rows) for col in range(cols)]
 current_cell = grid_cells[0]
 stack = []
 colors, color = [], 40
+mouse_pos = (0, 0)
+game_state = 'loading'
+
+def draw_loading_screen():
+    text = font.render('Generating maze...', True, pygame.Color('black'))
+    sc.blit(text, (WIDTH // 2 - text.get_width() // 2, HEIGHT // 2 - text.get_height() // 2))
+    
+def draw_waiting_screen():
+    pygame.draw.rect(sc, pygame.Color('black'), (0, 0, WIDTH, HEIGHT))
+    pygame.draw.rect(sc, pygame.Color('red'), (WIDTH - TILE, HEIGHT - TILE, TILE, TILE))
+    
+    text = font.render('Place cursor on the red square', True, pygame.Color('white'))
+    sc.blit(text, (WIDTH // 2 - text.get_width() // 2, HEIGHT // 2 - text.get_height() // 2))
+    
 
 while True:
     sc.fill(pygame.Color('#a6d5e2'))
@@ -90,24 +105,41 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-    
     [cell.draw() for cell in grid_cells]
-    current_cell.visited = True
-    current_cell.draw_current_cell()
-    
     [pygame.draw.rect(sc, colors[i], (cell.x * TILE + 2, cell.y * TILE + 2, TILE - 4, TILE - 4), border_radius=8) for i, cell in enumerate(stack)] 
+
+    mouse_pos = pygame.mouse.get_pos()
     
-    next_cell = current_cell.check_neighbors()
+    if game_state == 'loading':
+        draw_loading_screen()
+        current_cell.visited = True
+        current_cell.draw_current_cell()
+        
+        
+        next_cell = current_cell.check_neighbors()
+        
+        
+        
+        
+        if next_cell:
+            next_cell.visited = True
+            stack.append(current_cell)
+            colors.append((min(color, 255), 0, 103))
+            color += 1
+            remove_walls(current_cell, next_cell)
+            current_cell = next_cell 
+        elif stack: 
+            current_cell = stack.pop()
+        else:
+            game_state = 'waiting'
     
-    if next_cell:
-        next_cell.visited = True
-        stack.append(current_cell)
-        colors.append((min(color, 255), 0, 103))
-        color += 1
-        remove_walls(current_cell, next_cell)
-        current_cell = next_cell 
-    elif stack: 
-        current_cell = stack.pop()
+    if game_state == 'waiting':
+        draw_waiting_screen()
+        
+        if mouse_pos[0] > (WIDTH - TILE) and mouse_pos[0] < (WIDTH) and mouse_pos[1] > HEIGHT - TILE and mouse_pos[1] < HEIGHT:
+            game_state = 'playing'
+                
+    
         
     pygame.display.flip()
     clock.tick(30)
