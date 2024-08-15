@@ -1,4 +1,4 @@
-import pygame, math, random
+import pygame, math, random, subprocess
 
 pygame.init()
 
@@ -11,12 +11,19 @@ font = pygame.font.Font(None, 74)
 colours = [["Red", (255, 0, 0)], ["Green", (0, 255, 0)], ["Blue", (0, 0, 255)], ["Yellow", (255, 255, 0)]]
 texts = ["Red", "Green", "Blue", "Yellow"]
 
+modes = ['text', 'colour']
+
 mode = 'text'
 
-score = 5
+score = 0
+
+
+game_path = "main.py"
 
 class coloured_text:
     def __init__(self):
+        global mode 
+        mode = random.choice(modes)
         self.text = random.choice(texts)
         self.colour = random.choice(colours)
 
@@ -42,11 +49,17 @@ def check_correct(input):
             return False
         
 def act_score(correct):
+    global countdown, current_text, score
     if correct:
-        score -= 1
+        score += 1
+        if score >= 5:
+            subprocess.Popen(["python3", "-c", f"import game_opener; game_opener.open_game('{game_path}')"])
+            pygame.quit()
     else:
-        score = 5
-        countdown = 5
+        score = 0
+    countdown = 5
+    current_text = coloured_text()
+    
 
     
 countdown = 5
@@ -61,6 +74,7 @@ def update_countdown():
 
     if countdown <= 0:
         act_score(False)
+    
 
 countdown_timer = pygame.USEREVENT + 1
 pygame.time.set_timer(countdown_timer, 1000)
@@ -100,15 +114,18 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        elif event.type == countdown_timer:
+            update_countdown()
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                print(check_correct("Green"))
+                act_score(check_correct("Green"))
             elif event.key == pygame.K_DOWN:
-                print(check_correct("Yellow"))
+                act_score(check_correct("Yellow"))
             elif event.key == pygame.K_LEFT:
-                print(check_correct("Blue"))
+                act_score(check_correct("Blue"))
             elif event.key == pygame.K_RIGHT:
-                print(check_correct("Red"))
+                act_score(check_correct("Red"))
+                
                 
 
     screen.fill((255, 255, 255))
@@ -120,10 +137,9 @@ while running:
     draw_countdown()
 
         
-        
-    for event in pygame.event.get():
-        if event.type == countdown_timer:
-            update_countdown()
+    score_text = font.render(f"Score: {score}", True, pygame.Color('black'))
+    screen.blit(score_text, ((screen.get_width() - score_text.get_width()) // 2, 50))
+
     
     pygame.display.flip()
     clock.tick(60)
