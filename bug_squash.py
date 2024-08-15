@@ -10,8 +10,8 @@ game_path = "main.py"
 class Blood():
     def __init__(self, position):
         self.position = position
-        self.radius = 5
-        self.opacity = 255
+        self.radius = 4
+        self.opacity = 175
         self.last_time = pygame.time.get_ticks()
         self.duration = 1000
     def draw(self):
@@ -22,8 +22,8 @@ class Blood():
         current_time = pygame.time.get_ticks()
         time_difference = current_time - self.last_time
         self.last_time = current_time
-        self.opacity = max(0, self.opacity - 255 * time_difference / self.duration)
-        self.radius = max(0, self.radius - 5 * time_difference / self.duration)
+        self.opacity = max(0, self.opacity - 175 * time_difference / self.duration)
+        self.radius = max(0, self.radius + 3 * time_difference / self.duration)
 class bug():
     def __init__(self, position):
         self.direction = random.randrange(0, 360)
@@ -69,7 +69,7 @@ class bug():
 bloods = []
 bugs = []
 
-for i in range(random.randint(100, 500)):
+for i in range(random.randint(700, 1500)):
     bugs.append(bug((random.randrange(0, screen.get_width()), random.randrange(0, screen.get_height()))))
 
 # Game loop
@@ -96,6 +96,9 @@ while running:
     for blood in bloods:
         blood.draw()
         blood.update()
+        print(len(bloods))
+        if blood.opacity == 0:
+            bloods.remove(blood)
     
     pygame.display.flip()
 
