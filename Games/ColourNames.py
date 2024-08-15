@@ -8,10 +8,12 @@ clock = pygame.time.Clock()
 
 font = pygame.font.Font(None, 74)
 
-colours = [["red", (255, 0, 0)], ["green", (0, 255, 0)], ["blue", (0, 0, 255)], ["yellow", (255, 255, 0)]]
+colours = [["Red", (255, 0, 0)], ["Green", (0, 255, 0)], ["Blue", (0, 0, 255)], ["Yellow", (255, 255, 0)]]
 texts = ["Red", "Green", "Blue", "Yellow"]
 
 mode = 'text'
+
+score = 5
 
 class coloured_text:
     def __init__(self):
@@ -31,11 +33,37 @@ def check_correct(input):
     if mode == 'text':
         if input == current_text.text:
             return True
+        else:
+            return False
     else:
         if input == current_text.colour[0]:
             return True
+        else:
+            return False
+        
+def act_score(correct):
+    if correct:
+        score -= 1
+    else:
+        score = 5
+        countdown = 5
 
     
+countdown = 5
+
+def draw_countdown():
+    countdown_text = font.render(str(countdown), True, pygame.Color('black'))
+    screen.blit(countdown_text, ((screen.get_width() - countdown_text.get_width()) // 2, (screen.get_height() // 2) + 100))
+
+def update_countdown():
+    global countdown
+    countdown -= 1
+
+    if countdown <= 0:
+        act_score(False)
+
+countdown_timer = pygame.USEREVENT + 1
+pygame.time.set_timer(countdown_timer, 1000)
 
 current_text = coloured_text()
 
@@ -61,7 +89,7 @@ def draw_triangle(screen, colour, center, size, angle):
 def draw_triangles():
     center = (screen.get_width() - 75, screen.get_height() - 75)
     for i in range (4):
-        angle = math.radians(i * 90)
+        angle = math.radians((i * 90))
         new_x = center[0] + math.cos(angle) * 40
         new_y = center[1] - math.sin(angle) * 40
         draw_triangle(screen, colours[i][1], (new_x, new_y), 50, i * 90)
@@ -72,15 +100,30 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                print(check_correct("Green"))
+            elif event.key == pygame.K_DOWN:
+                print(check_correct("Yellow"))
+            elif event.key == pygame.K_LEFT:
+                print(check_correct("Blue"))
+            elif event.key == pygame.K_RIGHT:
+                print(check_correct("Red"))
+                
 
     screen.fill((255, 255, 255))
     
     current_text.draw(screen)
     
     draw_mode()
-    
     draw_triangles()
+    draw_countdown()
+
         
+        
+    for event in pygame.event.get():
+        if event.type == countdown_timer:
+            update_countdown()
     
     pygame.display.flip()
     clock.tick(60)
