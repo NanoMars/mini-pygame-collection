@@ -12,16 +12,22 @@ class stick:
         self.length = 350
         self.x = screen_width // 2
         self.y = (screen_height + self.length) // 2 + 50
-        self.angle = 2
-        
+        self.angle = 0
+        self.last_update = 0.0
+        self.gravity = 9.8
+        self.acceleration = self.gravity / self.length
+        self.velocity = 0.0
         
     def update(self):
-        time_passed = pygame.time.get_ticks() / 1000 
-        self.angle *= time_passed
-        self.angle = min(max(self.angle, -90), 90)
+        time_passed = pygame.time.get_ticks() / 1000
+        self.last_update = pygame.time.get_ticks() / 1000 
+        self.velocity = self.acceleration * time_passed
+        self.angle = 1/2 * self.acceleration *(pygame.time.get_ticks() / 1000) ** 2
+        print(pygame.time.get_ticks() / 1000)
+        
         
     def draw(self):
-        pygame.draw.line(screen, (0, 0, 0), (self.x, self.y), (self.x + self.length * math.cos(math.radians(self.angle - 90)), self.y + self.length * math.sin(math.radians(self.angle - 90))), 5)
+        pygame.draw.line(screen, (0, 0, 0), (self.x, self.y), (self.x + self.length * math.cos(self.angle), self.y + self.length * math.sin(self.angle)), 5)
         
 
 game_stick = stick()
