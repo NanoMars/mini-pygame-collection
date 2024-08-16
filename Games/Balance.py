@@ -12,7 +12,7 @@ class stick:
         self.length = 350
         self.x = pygame.mouse.get_pos()[0]
         self.y = (screen_height + self.length) // 2 + 50
-        self.angle = 0.01
+        self.angle = 0.1
         self.last_update = 0.0
         self.last_mouse_update = pygame.mouse.get_pos()[0]
         self.acceleration = 0
@@ -20,16 +20,24 @@ class stick:
         
     def update(self):
         time_passed = pygame.time.get_ticks() / 1000 - self.last_update
+        self.angle = self.velocity  * time_passed + self.angle
+        self.x = pygame.mouse.get_pos()[0]
         self.last_update = pygame.time.get_ticks() / 1000 
+        top_x = self.x + self.length * math.cos(self.angle - math.pi / 2)
         
-        mouse_x = pygame.mouse.get_pos()[0] - self.last_mouse_update
-        self.last_mouse_update = mouse_x
+        #mouse_x = pygame.mouse.get_pos()[0] - self.last_mouse_update
+        #self.last_mouse_update = mouse_x
         
+        new_angle = (math.pi / 2 - math.acos((top_x - self.x) / self.length) )
+        print(self.angle,new_angle)
+        self.angle = new_angle 
+
         self.acceleration = (self.angle / (math.pi / 2))
         
-        self.velocity += self.acceleration * time_passed 
+        self.velocity += (self.acceleration) * time_passed 
+        if (pygame.time.get_ticks() / 1000) < 2:
+            self.velocity = 0
         
-        self.angle += (self.velocity - mouse_x / 150) * time_passed
         self.angle = max(-math.pi / 2, min(self.angle, math.pi / 2))
         
         
@@ -39,7 +47,7 @@ class stick:
         
         
     def draw(self):
-        self.x = pygame.mouse.get_pos()[0]
+        
         pygame.draw.line(screen, (0, 0, 0), (self.x, self.y), (self.x + self.length * math.cos(self.angle -math.pi / 2), self.y + self.length * math.sin(self.angle -math.pi / 2)), 5)
         
 
