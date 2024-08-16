@@ -1,4 +1,4 @@
-import pygame, math, random
+import pygame, math, random, subprocess
 
 pygame.init()
 
@@ -11,12 +11,16 @@ stick_spawned = False
 
 countdown = 15
 
+font = pygame.font.Font(None, 74)
+
+game_path = "main.py"
+
 class stick:
     def __init__ (self):
         self.length = 350
         self.x = pygame.mouse.get_pos()[0]
         self.y = (screen_height + self.length) // 2 + 50
-        self.angle = random.uniform(-math.pi / 180, math.pi / 180)
+        self.angle = random.choice([-math.pi / 1440, math.pi / 1440])
         self.last_update = 0.0
         self.last_mouse_update = pygame.mouse.get_pos()[0]
         self.acceleration = 0
@@ -60,11 +64,18 @@ def update_countdown():
     print(countdown)
 
     if countdown <= 0:
-        print("exit the game and open main.py")
+        subprocess.Popen(["python3", "-c", f"import game_opener; game_opener.open_game('{game_path}')"])
+        pygame.quit()
+        
+        
+def draw_countdown():
+    countdown_text = font.render(str(countdown), True, pygame.Color('black'))
+    screen.blit(countdown_text, ((screen.get_width() - countdown_text.get_width()) // 2, (screen.get_height() // 10) ))
         
 
 countdown_timer = pygame.USEREVENT + 1
 pygame.time.set_timer(countdown_timer, 1000)
+
 
 button_rect = pygame.Rect((screen_width + 25) // 2, (screen_height - 350) // 2 + 50, 25, 350)
 
@@ -87,6 +98,7 @@ while running:
     else:
         game_stick.update()
         game_stick.draw()
+        draw_countdown()
         
     pygame.display.flip()
 
