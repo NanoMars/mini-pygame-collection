@@ -8,7 +8,7 @@ game_path = "main.py"
 screen_width = 800
 screen_height = 600
 screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption("Simple Pygame Template")
+pygame.display.set_caption("Button game")
 
 # Set up the game clock
 clock = pygame.time.Clock()
