@@ -1,4 +1,4 @@
-import pygame, math, random, subprocess
+import pygame, math, random, subprocess, os
 
 pygame.init()
 
@@ -53,7 +53,12 @@ def act_score(correct):
     if correct:
         score += 1
         if score >= 5:
-            subprocess.Popen(["python3", "-c", f"import game_opener; game_opener.open_game('{game_path}')"])
+            parent_dir = os.path.dirname(os.getcwd())
+
+            if os.name == "nt":
+                subprocess.Popen(["python", "-c", f"import game_opener; game_opener.open_game(r'{game_path}')"], cwd=parent_dir)
+            else:
+                subprocess.Popen(["python3", "-c", f"import game_opener; game_opener.open_game('{game_path}')"], cwd=parent_dir)
             pygame.quit()
     else:
         score = 0

@@ -3,7 +3,7 @@ import sys
 import math
 import noise
 import subprocess
-
+import os
 pygame.init()
 
 screen_width = 800
@@ -121,7 +121,12 @@ while running:
 
             if hover_timer <= 0 or hover_time_survived > 0:
                 print("Launching the game...")
-                subprocess.Popen(["python3", "-c", f"import game_opener; game_opener.open_game('{game_path}')"])
+                parent_dir = os.path.dirname(os.getcwd())
+
+                if os.name == "nt":
+                    subprocess.Popen(["python", "-c", f"import game_opener; game_opener.open_game(r'{game_path}')"], cwd=parent_dir)
+                else:
+                    subprocess.Popen(["python3", "-c", f"import game_opener; game_opener.open_game('{game_path}')"], cwd=parent_dir)
                 running = False
 
             hover_timer = hover_timer_start

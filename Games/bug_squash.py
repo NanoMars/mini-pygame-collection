@@ -1,4 +1,4 @@
-import pygame, noise, math, random, subprocess
+import pygame, noise, math, random, subprocess, os
 
 pygame.init()
 
@@ -86,7 +86,12 @@ while running:
             for bug in removed_bugs:
                 bloods.append(Blood(bug.position))
             if bugs == []:
-                subprocess.Popen(["python3", "-c", f"import game_opener; game_opener.open_game('{game_path}')"])
+                parent_dir = os.path.dirname(os.getcwd())
+
+                if os.name == "nt":
+                    subprocess.Popen(["python", "-c", f"import game_opener; game_opener.open_game(r'{game_path}')"], cwd=parent_dir)
+                else:
+                    subprocess.Popen(["python3", "-c", f"import game_opener; game_opener.open_game('{game_path}')"], cwd=parent_dir)
                 pygame.quit()
     
     for bug in bugs:

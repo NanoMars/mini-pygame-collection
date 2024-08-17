@@ -1,4 +1,4 @@
-import pygame, sys, subprocess
+import pygame, sys, subprocess, os
 
 
 pygame.init()
@@ -76,7 +76,12 @@ while running:
     
     if clicks_to_go == 0:
         running = False
-        subprocess.Popen(["python", game_path])
+        parent_dir = os.path.dirname(os.getcwd())
+
+        if os.name == "nt":
+            subprocess.Popen(["python", "-c", f"import game_opener; game_opener.open_game(r'{game_path}')"], cwd=parent_dir)
+        else:
+            subprocess.Popen(["python3", "-c", f"import game_opener; game_opener.open_game('{game_path}')"], cwd=parent_dir)
         
     clock.tick(60)
     pygame.display.flip()

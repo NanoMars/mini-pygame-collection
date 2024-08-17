@@ -2,7 +2,7 @@ import pygame
 import sys
 import random
 import subprocess
-
+import os
 pygame.init()
 
 grid_size = 12
@@ -55,7 +55,12 @@ while running:
             if new_color != current_color:
                 fill(current_color, new_color, 0, 0)
                 if check_win():
-                    subprocess.Popen(["python3", "-c", f"import game_opener; game_opener.open_game('{game_path}')"])
+                    parent_dir = os.path.dirname(os.getcwd())
+
+                    if os.name == "nt":
+                        subprocess.Popen(["python", "-c", f"import game_opener; game_opener.open_game(r'{game_path}')"], cwd=parent_dir)
+                    else:
+                        subprocess.Popen(["python3", "-c", f"import game_opener; game_opener.open_game('{game_path}')"], cwd=parent_dir)
                     pygame.quit()
                     sys.exit()
 
