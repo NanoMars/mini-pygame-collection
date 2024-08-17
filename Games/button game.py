@@ -1,4 +1,4 @@
-import pygame, sys, subprocess, os
+import pygame, sys, subprocess
 
 
 pygame.init()
@@ -76,10 +76,7 @@ while running:
     
     if clicks_to_go == 0:
         running = False
-        if os.name == "nt":
-            subprocess.Popen(["python", "-c", f"import game_opener; game_opener.open_game(r'{game_path}')"], cwd=r"d:\documents\Developer\mini-pygame-collection")
-        else:
-            subprocess.Popen(["python3", "-c", f"import game_opener; game_opener.open_game('{game_path}')"], cwd=r"d:\documents\Developer\mini-pygame-collection")
+        subprocess.Popen(["python", game_path])
         
     clock.tick(60)
     pygame.display.flip()
