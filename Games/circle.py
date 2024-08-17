@@ -1,8 +1,4 @@
-import pygame
-import sys
-import math
-import noise
-import subprocess
+import pygame, sys, math, noise, subprocess, os
 
 pygame.init()
 
@@ -121,7 +117,10 @@ while running:
 
             if hover_timer <= 0 or hover_time_survived > 0:
                 print("Launching the game...")
-                subprocess.Popen(["python3", "-c", f"import game_opener; game_opener.open_game('{game_path}')"])
+                if os.name == "nt":
+                    subprocess.Popen(["python", "-c", f"import game_opener; game_opener.open_game(r'{game_path}')"], cwd=r"d:\documents\Developer\mini-pygame-collection")
+                else:
+                    subprocess.Popen(["python3", "-c", f"import game_opener; game_opener.open_game('{game_path}')"], cwd=r"d:\documents\Developer\mini-pygame-collection")
                 running = False
 
             hover_timer = hover_timer_start

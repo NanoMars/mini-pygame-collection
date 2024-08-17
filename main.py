@@ -121,5 +121,8 @@ while running:
     pygame.display.update()
     fps_clock.tick(FPS)
     
-subprocess.Popen(["python3", "-c", f"import game_opener; game_opener.open_game('{game_path}')"])
+if os.name == "nt":
+    subprocess.Popen(["python", "-c", f"import game_opener; game_opener.open_game(r'{game_path}')"], cwd=r"d:\documents\Developer\mini-pygame-collection")
+else:
+    subprocess.Popen(["python3", "-c", f"import game_opener; game_opener.open_game('{game_path}')"], cwd=r"d:\documents\Developer\mini-pygame-collection")
 pygame.quit()

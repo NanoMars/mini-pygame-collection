@@ -64,7 +64,10 @@ while running:
         
         if prize_size > screen.get_width():
             print("You found the treasure!")
-            subprocess.Popen(["python3", "-c", f"import game_opener; game_opener.open_game('{game_path}')"])
+            if os.name == "nt":
+                subprocess.Popen(["python", "-c", f"import game_opener; game_opener.open_game(r'{game_path}')"], cwd=r"d:\documents\Developer\mini-pygame-collection")
+            else:
+                subprocess.Popen(["python3", "-c", f"import game_opener; game_opener.open_game('{game_path}')"], cwd=r"d:\documents\Developer\mini-pygame-collection")
             pygame.quit()
             sys.exit()
 

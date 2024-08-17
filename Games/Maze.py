@@ -1,4 +1,4 @@
-import pygame, subprocess
+import pygame, subprocess, os
 from random import choice
 
 RES = WIDTH, HEIGHT = 1200, 900
@@ -159,7 +159,10 @@ while True:
         if not timer_start:
             timer_start = pygame.time.get_ticks()
         elif pygame.time.get_ticks() - timer_start > 2500:
-            subprocess.Popen(["python3", "-c", f"import game_opener; game_opener.open_game('{game_path}')"])
+            if os.name == "nt":
+                subprocess.Popen(["python", "-c", f"import game_opener; game_opener.open_game(r'{game_path}')"], cwd=r"d:\documents\Developer\mini-pygame-collection")
+            else:
+                subprocess.Popen(["python3", "-c", f"import game_opener; game_opener.open_game('{game_path}')"], cwd=r"d:\documents\Developer\mini-pygame-collection")
             pygame.quit()
             exit()
         
