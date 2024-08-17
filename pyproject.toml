@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "mini-pygame-collection"
+version = "0.1.0"
+description = "A collection of mini Pygame projects"
+authors = ["NanoMars <Armand.packham@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pygame = "^2.6.0"
+noise = "^1.2.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
