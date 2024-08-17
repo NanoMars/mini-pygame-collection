@@ -14,6 +14,11 @@ fps_clock = pygame.time.Clock()
 pygame.display.set_caption('Roulette Wheel')
 font = pygame.font.Font(None, FONT_SIZE)
 
+def resource_path(relative_path):
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.abspath("."), relative_path)
+
 
 class Label:
     def __init__(self, filename):
@@ -29,7 +34,7 @@ class Label:
 
 
 max_width = 0
-games_folder = 'Games'
+games_folder = resource_path('Games')
 games_list = []
 labels = []
 
@@ -53,7 +58,7 @@ for filename in os.listdir(games_folder):  # get all the games in the games fold
         max_width = text_width
 
 SCREEN_WIDTH = max_width + 20
-SCREEN_HEIGHT = ((len(labels) - 1) * FONT_SIZE)
+SCREEN_HEIGHT = max(((len(labels) - 1) * FONT_SIZE), 36 * 8)
 
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
