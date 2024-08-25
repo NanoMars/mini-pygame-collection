@@ -11,26 +11,42 @@ AI was used in the making of this collection & readme.
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+
 ## Installation
 
-1. **Create a Virtual Environment:**  
+1. **Clone the Repository:**  
+   First, download the project files. Open your terminal and run:
+   ```bash
+   git clone https://github.com/NanoMars/mini-pygame-collection/
+   ```
+
+2. **Navigate to the Project Directory:**  
+   Change your working directory to the project's folder:
+   ```bash
+   cd <project-folder>
+   ```
+   Replace `<project-folder>` with the name of the folder you just cloned.
+
+3. **Create a Virtual Environment:**  
    ```bash
    python -m venv venv
    ```
 
-2. **Activate the Virtual Environment:**
+4. **Activate the Virtual Environment:**
    - **Windows:** `venv\Scripts\activate`
    - **macOS/Linux:** `source venv/bin/activate`
 
-3. **Install Dependencies:**  
+5. **Install Dependencies:**  
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Run the Project:**  
+6. **Run the Project:**  
    ```bash
    python main.py
    ```
+
+Make sure to replace the placeholders with the actual details of your project! :)
 
 ## Acknowledgements
 
