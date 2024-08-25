@@ -28,7 +28,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
    ```
 
 2. **Navigate to the Project Directory:**  
-   Change your working directory to the project's folder:
+   Change your working directory to the folder you just cloned:
    ```bash
    cd mini-pygame-collection
    ```
