@@ -22,7 +22,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ----
 
 1. **Clone the Repository:**  
-   First, download the project files. Open your terminal and run:
+   First, download the project files. Open your terminal **as an administrator** and run:
    ```bash
    git clone https://github.com/NanoMars/mini-pygame-collection/
    ```
