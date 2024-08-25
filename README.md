@@ -30,9 +30,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 2. **Navigate to the Project Directory:**  
    Change your working directory to the project's folder:
    ```bash
-   cd <project-folder>
+   cd mini-pygame-collection
    ```
-   Replace `<project-folder>` with the name of the folder you just cloned.
 
 3. **Create a Virtual Environment:**  
    ```bash
@@ -52,8 +51,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
    ```bash
    python main.py
    ```
-
-Make sure to replace the placeholders with the actual details of your project! :)
 
 ## Acknowledgements
 
