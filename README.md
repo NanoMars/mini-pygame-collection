@@ -5,11 +5,32 @@
 
 This is a collection of 9 mini games developed using Pygame. Each game may be challenging, or just somewhat interesting, you never know what you're gonna get.
 
-AI was used in the making of this collection. 
+AI was used in the making of this collection & readme. 
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Installation
+
+1. **Create a Virtual Environment:**  
+   ```bash
+   python -m venv venv
+   ```
+
+2. **Activate the Virtual Environment:**
+   - **Windows:** `venv\Scripts\activate`
+   - **macOS/Linux:** `source venv/bin/activate`
+
+3. **Install Dependencies:**  
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Run the Project:**  
+   ```bash
+   python main.py
+   ```
 
 ## Acknowledgements
 
