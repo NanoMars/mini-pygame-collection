@@ -21,45 +21,37 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ----
 
-1. **Navigate to the Folder Where You Want to Install the Collection:**  
-   Open your terminal and use the `cd` command to change directories to the folder where you'd like to install the project. For example:
-   ```bash
-   cd /path/to/your/folder
-   ```
-
-2. **Clone the Repository:**  
-   Once you're in the correct directory, download the project files by running:
+1. **Clone the Repository:**  
+   First, download the project files. Open your terminal and run:
    ```bash
    git clone https://github.com/NanoMars/mini-pygame-collection/
    ```
 
-3. **Navigate to the Project Directory:**  
+2. **Navigate to the Project Directory:**  
    Change your working directory to the project's folder:
    ```bash
    cd <project-folder>
    ```
    Replace `<project-folder>` with the name of the folder you just cloned.
 
-4. **Create a Virtual Environment:**  
+3. **Create a Virtual Environment:**  
    ```bash
    python -m venv venv
    ```
 
-5. **Activate the Virtual Environment:**
+4. **Activate the Virtual Environment:**
    - **Windows:** `venv\Scripts\activate`
    - **macOS/Linux:** `source venv/bin/activate`
 
-6. **Install Dependencies:**  
+5. **Install Dependencies:**  
    ```bash
    pip install -r requirements.txt
    ```
 
-7. **Run the Project:**  
+6. **Run the Project:**  
    ```bash
    python main.py
    ```
-
-This updated sequence should help guide users through the setup process more smoothly!
 
 Make sure to replace the placeholders with the actual details of your project! :)
 
