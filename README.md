@@ -7,6 +7,8 @@ This is a collection of 9 mini games developed using Pygame. Each game may be ch
 
 AI was used in the making of this collection & readme. 
 
+![maze](https://cloud-5pymmsknd-hack-club-bot.vercel.app/0image.png)
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
