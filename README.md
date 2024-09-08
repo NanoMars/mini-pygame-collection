@@ -52,7 +52,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 6. **Run the Project:**  
    ```bash
    python main.py
-   ```
+   ``` 
+   (Noise is not available on windows, or at least I haven't figured out how to install it. You can safely ignore the error message if you're on windows as noise is only required for the bug squash minigame.)
 
 ## Acknowledgements
 
